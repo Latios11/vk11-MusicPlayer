@@ -1,0 +1,35 @@
+.login-app{
+    padding: 4rem;
+    height: 610px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5rem;
+    background: rgb(46, 46, 46);
+}
+.warning{
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+}
+
+.get-started{
+    border: 5px solid rgb(255, 157, 0);
+    padding: 2rem;
+    background: rgb(41, 41, 41);
+    color: rgb(255, 225, 0);
+    font-weight: 700;
+    font-size: 2rem;
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+@media (max-width: 430px){
+    .login-app{
+        padding: 2rem;
+        height: 91.1vh;
+    }
+    .get-started{
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+}
