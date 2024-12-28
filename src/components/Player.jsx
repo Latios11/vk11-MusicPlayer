@@ -29,29 +29,37 @@ const Player = () => {
 
   // Fetch user's tracks or albums based on search type
   const searchSpotify = () => {
-    if (token) {
-      const endpoint = searchType === 'track'
-        ? `https://api.spotify.com/v1/search?q=${query}&type=track&limit=10`
-        : `https://api.spotify.com/v1/search?q=${query}&type=album&limit=10`;
-
-      axios
-        .get(endpoint, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(response => {
-          if (searchType === 'track') {
-            setTracks(response.data.tracks.items);
-            setAlbums([]); // Clear albums if switching back to tracks
-          } else {
-            setAlbums(response.data.albums.items);
-            setTracks([]); // Clear tracks if switching to albums
-          }
-        })
-        .catch(error => {
-          console.error(`Error fetching ${searchType}s:`, error);
-        });
+    if (!token) {
+      console.error('Access token is missing');
+      setLoading(false); // Reset loading if no token
+      return;
     }
+  
+    const endpoint = searchType === 'track'
+      ? `https://api.spotify.com/v1/search?q=${query}&type=track&limit=10`
+      : `https://api.spotify.com/v1/search?q=${query}&type=album&limit=10`;
+  
+    axios
+      .get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(response => {
+        if (searchType === 'track') {
+          setTracks(response.data.tracks.items);
+          setAlbums([]);
+        } else {
+          setAlbums(response.data.albums.items);
+          setTracks([]); // Clear tracks if switching to albums
+        }
+      })
+      .catch(error => {
+        console.error(`Error fetching ${searchType}s:`, error);
+      })
+      .finally(() => {
+        setLoading(false); // Always reset loading
+      });
   };
+  
 
   const handleOnTrackClick = (track) => {
     setCurrentItem(track.id);
@@ -88,8 +96,14 @@ const Player = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!query.trim()) {
+      alert("Please enter a search query.");
+      return;
+    }
+    setLoading(true);
     searchSpotify();
   };
+  
 
   return (
     <div className='music-app'>
@@ -106,7 +120,7 @@ const Player = () => {
           <option value="track">Tracks</option>
           <option value="album">Albums</option>
         </select>
-        <button type='submit'>Search</button>
+        <button type='submit'>{loading ? 'Loading...' : 'Search' }</button>
       </form>
 
   
