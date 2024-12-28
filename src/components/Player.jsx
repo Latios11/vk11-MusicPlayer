@@ -4,6 +4,7 @@ import './Player.css';
 
 const Player = () => {
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(false);
   const [tracks, setTracks] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [currentItem, setCurrentItem] = useState(''); // Stores track or album ID
@@ -21,7 +22,6 @@ const Player = () => {
         .find(param => param.startsWith('access_token'))
         ?.split('=')[1];
       setToken(tokenFromHash);
-      window.location.hash = '';// Clear hash after getting token
     } else {
       console.error('URL hash is empty');
     }
