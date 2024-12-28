@@ -4,7 +4,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .music-app{
-    height: 95.5vh;
+    height: 100%;
     padding: 1rem 4rem;
     display: flex;
     flex-direction: column;
